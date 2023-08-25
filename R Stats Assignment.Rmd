@@ -1,0 +1,97 @@
+---
+title: "Stats in R Assignment"
+author: "Alex Lucchesi"
+date: "2023/05/30"
+output: html_document
+---
+
+## Assignment
+
+For today's assignment, you will be given a blank notebook and a link to the [Call of Duty Dataset](https://www.kaggle.com/datasets/beridzeg45/call-of-duty-reviews) You will need to fill out the notebook and create your own code chunks to run code. Remember that we use this code without any quotation marks to create a code chunk: '`{r} '` \### Your Goal:
+
+To receive credit for today's assignment, you will need to:
+
+-   Import the dataset
+-   Load the dataset into a tibble
+-   Mutate a new column
+-   Create a hypothesis regarding your data and communicate that hypothesis in a scientific method.
+-   Create a notebook that has markdown cells, explaining your code and process/thoughts. **Your markdown should be well thought out and reflect a thorough analysis.**
+-   Clean the data
+-   Explore the data (include visualizations)
+-   Create a statistical test and communicate the results
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+df <- read.csv("C:/Users/aniru/OneDrive/Documents/codingtemple/week7/day3/Call of Duty Reviews.csv")
+df
+```
+
+```{r}
+my_fun <- function(x){
+ 
+  names(x) <- names(x) %>% str_replace_all("\\.", "_")%>%tolower()
+    return(x)
+}
+
+df <- my_fun(df)
+
+df
+```
+
+```{r}
+df
+```
+
+```{r}
+df[!apply(df == "", 1, all), ] 
+```
+
+```{r}
+df_mut <- mutate(df,total_compund_score=critic_compound_score+user_compound_score)
+df_mut
+```
+
+```{r}
+df_mut <- mutate(df,total_compund_score=critic_compound_score+user_compound_score)
+df_mut
+```
+
+```{r}
+ggplot(data=df, mapping = aes(x=platform, y=metascore)) + 
+  geom_point()
+```
+
+---
+Observation:
+  the metascore has relationship with respect to critic_compound_score
+
+Question:
+  is there a relationship between metascore  with respect to critic_compound_score?
+  
+Hypothesize:
+null hypothesis-there is no relationship between the metascore with respect to critic_compound_score
+alternate hypothesis-there is a relationship between the metascore with respect to critic_compound_score
+
+Test:
+A comparison test would be performed and then reject or fail to reject one of the hypothesis
+
+Conclusion:
+Analyse the results and draw conclusions depending on whether the hypothesis is rejected or not
+---
+
+```{r}
+ggplot(data=df, mapping = aes(x=user_compound_score, y=platform)) + 
+  geom_col()
+```
+
+```{r}
+test <- cor.test(df$metascore , df$critic_compound_score)
+test
+```
+
+---
+the correlation coefficient is 0.3352843 which shows weak correlation and since the p-value is 0.002076 which is lesser than 0.05,the results are statistically significant and therefore the null hypothesis would be rejected . 
+---
